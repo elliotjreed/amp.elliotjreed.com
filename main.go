@@ -14,7 +14,8 @@ import (
 )
 
 type Image struct {
-	Url string
+	Type string `json:"@type"`
+	Url  string `json:"url"`
 }
 
 type Person struct {
@@ -51,14 +52,34 @@ type BlogPosting struct {
 	ArticleBody      string       `json:"articleBody"`
 }
 
+type BlogPost struct {
+	Context          string       `json:"@context"`
+	Type             string       `json:"@type"`
+	Name             string       `json:"name"`
+	DateCreated      string       `json:"dateCreated"`
+	DatePublished    string       `json:"datePublished"`
+	DateModified     string       `json:"dateModified"`
+	WordCount        int64        `json:"wordCount"`
+	Author           Person       `json:"author"`
+	Url              string       `json:"url"`
+	MainEntityOfPage string       `json:"mainEntityOfPage"`
+	InLanguage       string       `json:"inLanguage"`
+	CopyrightHolder  Person       `json:"copyrightHolder"`
+	Publisher        Organisation `json:"publisher"`
+	Headline         string       `json:"headline"`
+	License          string       `json:"license"`
+	Image            Image        `json:"image"`
+	SameAs           string       `json:"sameAs"`
+}
+
 type ApiBlogPostingResponse struct {
 	Data BlogPosting `json:"data"`
 }
 
 type Blog struct {
-	Context   string        `json:"@context"`
-	Type      string        `json:"@type"`
-	BlogPosts []BlogPosting `json:"blogPosts"`
+	Context   string     `json:"@context"`
+	Type      string     `json:"@type"`
+	BlogPosts []BlogPost `json:"blogPosts"`
 }
 
 type ApiBlogResponse struct {
@@ -98,10 +119,11 @@ func main() {
 			log.Fatal(jsonErr)
 		}
 
-		posts := content.Data.BlogPosts
+		encodedBlog, _ := json.Marshal(content.Data)
 
 		c.HTML(http.StatusOK, "posts.html", gin.H{
-			"posts": posts,
+			"posts":  content.Data.BlogPosts,
+			"schema": template.JS(encodedBlog),
 		})
 	})
 
@@ -109,6 +131,7 @@ func main() {
 		apiUrl := "https://api.elliotjreed.com/blog/post/" + c.Param("date") + "/" + c.Param("link")
 
 		content := ApiBlogPostingResponse{}
+
 		jsonErr := json.Unmarshal(getResponse(apiUrl), &content)
 		if jsonErr != nil {
 			log.Fatal(jsonErr)
@@ -123,6 +146,8 @@ func main() {
 		}
 
 		dateCreated := blogPosting.DateCreated
+		encodedBlogPosting, _ := json.Marshal(blogPosting)
+
 		c.HTML(http.StatusOK, "post.html", gin.H{
 			"article":           template.HTML(buf.String()),
 			"dateHumanReadable": formatDate(blogPosting.DateCreated),
@@ -130,6 +155,7 @@ func main() {
 			"headline":          blogPosting.Headline,
 			"canonicalUrl":      "https://www.elliotjreed.com/blog/" + c.Param("date") + "/" + c.Param("link"),
 			"wordCount":         blogPosting.WordCount,
+			"schema":            template.JS(encodedBlogPosting),
 		})
 	})
 
