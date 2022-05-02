@@ -1,0 +1,5 @@
+templates/css/*.js
+node_modules
+go.sum
+gin-bin
+build/

@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./assets/build",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "module": "es2022",
+    "moduleResolution": "node",
+    "target": "es2022",
+    "lib": [
+      "es2022"
+    ]
+  },
+  "include": [
+    "./index.ts"
+  ],
+  "types": [
+    "typePatches"
+  ]
+}

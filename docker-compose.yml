@@ -1,0 +1,19 @@
+version: "3.6"
+
+services:
+  amp-elliotjreed:
+    image: elliotjreed/amp.elliotjreed.com:latest
+    container_name: amp-elliotjreed
+    restart: always
+    networks:
+      - web
+    labels:
+      - "traefik.backend=amp-elliotjreed"
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:amp.elliotjreed.com"
+      - "traefik.port=98"
+
+networks:
+  web:
+    external: true

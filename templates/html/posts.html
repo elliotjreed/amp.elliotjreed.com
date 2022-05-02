@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html ⚡="">
+<head>
+  <meta charset="utf-8"/>
+  <title>{{ .headline }} | Elliot J. Reed</title>
+  <link rel="canonical" href="https://www.elliotjreed.com/blog"/>
+  {{template "amp-head.html"}}
+</head>
+{{template "header.html"}}
+<section class="divide-y">
+  <div class="space-y-2 pt-6 pb-8 md:space-y-5">
+    <h1 class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+      Posts
+    </h1>
+  </div>
+
+  <ul>
+
+    {{ range .posts }}
+    <li class="py-4">
+      <article class="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
+        <dl>
+          <dt class="sr-only">Published on</dt>
+          <dd class="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+            <time dateTime={{ .DateCreated }}>{{ .DateCreated | formatDate }}</time>
+          </dd>
+        </dl>
+        <div class="space-y-3 xl:col-span-3">
+          <div>
+            <h3 class="text-2xl font-bold leading-8 tracking-tight">
+              <a href="{{ .Url | urlPath }}" class="text-gray-900 dark:text-gray-100">{{ .Headline }}</a>
+            </h3>
+            <div class="flex flex-wrap">{{ .WordCount }} words</div>
+          </div>
+        </div>
+      </article>
+    </li>
+    {{ end }}
+
+  </ul>
+</section>
+{{template "footer.html"}}

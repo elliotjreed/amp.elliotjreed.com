@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ⚡="">
+<head>
+  <meta charset="utf-8"/>
+  <title>Elliot J. Reed</title>
+  <link rel="canonical" href="https://www.elliotjreed.com"/>
+  {{template "amp-head.html"}}
+</head>
+{{template "header.html"}}
+
+<section>
+  <div class="items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0">
+    <div class="flex flex-col items-center pt-8">
+      <amp-img
+        src="https://res.cloudinary.com/elliotjreed/image/upload/w_384,h_384,c_scale,f_auto,q_auto/v1553434444/elliotjreed.jpg"
+        alt="Photograph of Elliot"
+        width="192"
+        height="192"
+        class="h-48 w-48 rounded-full"
+        layout="intrinsic"
+      ></amp-img>
+      <h1 class="pt-4 pb-2 text-2xl font-bold leading-8 tracking-tight">Elliot Reed</h1>
+      <div class="text-gray-500 dark:text-gray-400">Technical Lead, Software Development</div>
+      <div class="text-gray-500 dark:text-gray-400">Nottingham, United Kingdom</div>
+    </div>
+    <div class="prose max-w-none pt-8 pb-8 dark:prose-dark xl:col-span-2">
+      <p>
+        Hi! I&apos;m Elliot, a software developer / technical lead based in Nottingham. My interests are generally
+        in E-Commerce, Linux, PHP, Javascript, Docker, and general DevOps.
+      </p>
+      <p>
+        I&apos;m currently playing around with Go, so
+        if you&apos;re reading this then you&apos;re looking at an AMP page rendered by Go (Gin framework) which reads
+        the content from <a href="https://github.com/elliotjreed" rel="noreferrer noopener">github.com/elliotjreed</a> via
+        an <a href="https://api.elliotjreed.com" rel="noreferrer noopener">API written in PHP</a>
+        (<a href="https://github.com/elliotjreed/api.elliotjreed.com/" rel="noreferrer noopener">
+        github.com/elliotjreed/api.elliotjreed.com</a>), the source for the Go code can be found at
+        <a href="https://github.com/elliotjreed/www.elliotjreed.com/" rel="noreferrer noopener">
+        github.com/elliotjreed/www.elliotjreed.com</a>. My main website has a bit more on it:
+        <a href="https://www.elliotjreed.com" rel="noreferrer noopener">www.elliotjreed.com</a> and the source code (React)
+        can be found for that at <a href="https://github.com/elliotjreed/www.elliotjreed.com/" rel="noreferrer noopener">
+        github.com/elliotjreed/www.elliotjreed.com</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+{{template "footer.html"}}

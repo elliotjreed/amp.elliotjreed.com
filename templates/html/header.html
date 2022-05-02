@@ -1,0 +1,61 @@
+{{define "header.html"}}
+<body class="bg-white text-black antialiased dark:bg-gray-900 dark:text-white">
+<div class="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+  <div class="flex h-screen flex-col justify-between">
+    <header class="flex items-center justify-between py-10 print:hidden">
+      <div>
+        <a href="/">
+          <div class="flex items-center justify-between">
+            <div class="mr-3 h-6 text-2xl font-semibold sm:block">Elliot J. Reed</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="flex items-center text-base leading-5">
+        <div class="hidden sm:block">
+          <a href="/" class="p-1 font-medium text-gray-900 dark:text-gray-100 sm:p-4">Home</a>
+          <a href="/posts" class="p-1 font-medium text-gray-900 dark:text-gray-100 sm:p-4">All Posts</a>
+          <a href="https://www.elliotjreed.com" class="p-1 font-medium text-gray-900 dark:text-gray-100 sm:p-4">Main Website</a>
+        </div>
+
+        <div class="sm:hidden">
+          <button type="button"
+                  class="ml-1 mr-1 h-8 w-8 rounded py-1"
+                  aria-label="Open menu"
+                  on="tap:header-sidebar.open"
+                  tabindex="0"
+          >
+            ☰
+          </button>
+
+          <amp-sidebar id="header-sidebar"
+                       layout="nodisplay"
+                       side="right"
+                       class="right-0 w-full transform bg-gray-200 duration-300 ease-in-out dark:bg-gray-800"
+          >
+            <button type="button"
+                    class="text-xl ml-1 mr-5 mt-9 h-8 w-8 rounded py-1 float-right"
+                    aria-label="Close menu"
+                    on="tap:header-sidebar.close"
+                    tabindex="0"
+            >
+              ✕
+            </button>
+            <nav class="fixed mt-8 h-full">
+              <div class="px-12 py-4">
+                <a href="/" class="text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100">Home</a>
+              </div>
+              <div class="px-12 py-4">
+                <a href="/posts" class="text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100">All Posts</a>
+              </div>
+              <div class="px-12 py-4">
+                <hr />
+                <a href="https://www.elliotjreed.com" class="text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100">Main Website</a>
+              </div>
+            </nav>
+          </amp-sidebar>
+        </div>
+      </div>
+    </header>
+    <main class="mb-auto" id="main-content">
+{{end}}
