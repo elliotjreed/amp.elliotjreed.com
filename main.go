@@ -19,14 +19,17 @@ type Image struct {
 }
 
 type Person struct {
+	Type           string `json:"@type"`
 	Name           string `json:"name"`
 	AlternateName  string `json:"alternateName"`
 	GivenName      string `json:"givenName"`
 	AdditionalName string `json:"additionalName"`
 	FamilyName     string `json:"familyName"`
+	Url            string `json:"url"`
 }
 
 type Organisation struct {
+	Type string `json:"@type"`
 	Name string `json:"name"`
 	Logo Image  `json:"logo"`
 }

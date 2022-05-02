@@ -1,5 +1,4 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<meta name="amp-google-client-id-api" content="googleanalytics"/>
 <script async="" src="https://cdn.ampproject.org/v0.js"></script>
 <style amp-custom>{{template "client.css"}}</style>
 <style amp-boilerplate="">
@@ -70,3 +69,20 @@
   src="https://cdn.ampproject.org/v0/amp-sidebar-0.1.js"
   async=""
 ></script>
+<amp-analytics type="gtag" data-credentials="include">
+  <script type="application/json">
+    {
+      "vars": {
+        "gtag_id": "UA-90440102-1",
+        "linker": {
+          "domains": ["www.elliotjreed.com", "amp.elliotjreed.com"]
+        },
+        "config": {
+          "UA-90440102-1": {
+            "groups": "default"
+          }
+        }
+      }
+    }
+  </script>
+</amp-analytics>
