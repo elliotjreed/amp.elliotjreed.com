@@ -106,10 +106,10 @@ func main() {
 	})
 
 	router.GET("/blog/:date/:link", func(c *gin.Context) {
-		url := "https://api.elliotjreed.com/blog/post/" + c.Param("date") + "/" + c.Param("link")
+		apiUrl := "https://api.elliotjreed.com/blog/post/" + c.Param("date") + "/" + c.Param("link")
 
 		content := ApiBlogPostingResponse{}
-		jsonErr := json.Unmarshal(getResponse(url), &content)
+		jsonErr := json.Unmarshal(getResponse(apiUrl), &content)
 		if jsonErr != nil {
 			log.Fatal(jsonErr)
 		}
@@ -133,7 +133,7 @@ func main() {
 		})
 	})
 
-	router.Run("0.0.0.0:98")
+	router.Run("0.0.0.0:98") //nolint:errcheck
 }
 
 func getResponse(url string) []byte {
