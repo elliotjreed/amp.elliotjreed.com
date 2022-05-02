@@ -10,6 +10,6 @@ RUN apk add --no-cache libc6-compat
 
 RUN chmod +x /app/go_build_amp_elliotjreed_com
 
-EXPOSE 8080
+EXPOSE 98
 
 CMD ["/app/go_build_amp_elliotjreed_com"]
