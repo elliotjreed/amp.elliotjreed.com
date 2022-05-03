@@ -75,18 +75,10 @@ type BlogPost struct {
 	SameAs           string       `json:"sameAs"`
 }
 
-type ApiBlogPostingResponse struct {
-	Data BlogPosting `json:"data"`
-}
-
 type Blog struct {
 	Context   string     `json:"@context"`
 	Type      string     `json:"@type"`
 	BlogPosts []BlogPost `json:"blogPosts"`
-}
-
-type ApiBlogResponse struct {
-	Data Blog `json:"data"`
 }
 
 func formatDate(date string) string {
@@ -116,49 +108,45 @@ func main() {
 	})
 
 	router.GET("/posts", func(c *gin.Context) {
-		content := ApiBlogResponse{}
-		jsonErr := json.Unmarshal(getResponse("https://api.elliotjreed.com/blog/posts"), &content)
+		blog := Blog{}
+		jsonErr := json.Unmarshal(getResponse("https://api.elliotjreed.com/schema/blog/posts"), &blog)
 		if jsonErr != nil {
 			log.Fatal(jsonErr)
 		}
 
-		encodedBlog, _ := json.Marshal(content.Data)
+		encodedBlog, _ := json.Marshal(blog)
 
 		c.HTML(http.StatusOK, "posts.html", gin.H{
-			"posts":  content.Data.BlogPosts,
+			"posts":  blog.BlogPosts,
 			"schema": template.JS(encodedBlog),
 		})
 	})
 
 	router.GET("/blog/:date/:link", func(c *gin.Context) {
-		apiUrl := "https://api.elliotjreed.com/blog/post/" + c.Param("date") + "/" + c.Param("link")
+		apiUrl := "https://api.elliotjreed.com/schema/blog/post/" + c.Param("date") + "/" + c.Param("link")
 
-		content := ApiBlogPostingResponse{}
-
-		jsonErr := json.Unmarshal(getResponse(apiUrl), &content)
+		blogPosting := BlogPosting{}
+		response := getResponse(apiUrl)
+		jsonErr := json.Unmarshal(response, &blogPosting)
 		if jsonErr != nil {
 			log.Fatal(jsonErr)
 		}
 
 		var buf bytes.Buffer
-		blogPosting := content.Data
 		markdownError := goldmark.Convert([]byte(blogPosting.ArticleBody), &buf)
 
 		if markdownError != nil {
 			log.Fatal(markdownError)
 		}
 
-		dateCreated := blogPosting.DateCreated
-		encodedBlogPosting, _ := json.Marshal(blogPosting)
-
 		c.HTML(http.StatusOK, "post.html", gin.H{
 			"article":           template.HTML(buf.String()),
 			"dateHumanReadable": formatDate(blogPosting.DateCreated),
-			"date":              dateCreated,
+			"date":              blogPosting.DateCreated,
 			"headline":          blogPosting.Headline,
 			"canonicalUrl":      "https://www.elliotjreed.com/blog/" + c.Param("date") + "/" + c.Param("link"),
 			"wordCount":         blogPosting.WordCount,
-			"schema":            template.JS(encodedBlogPosting),
+			"schema":            template.JS(response),
 		})
 	})
 
