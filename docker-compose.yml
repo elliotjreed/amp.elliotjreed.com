@@ -5,6 +5,8 @@ services:
     image: elliotjreed/amp.elliotjreed.com:latest
     container_name: amp-elliotjreed
     restart: always
+    environment:
+      - GIN_MODE=release
     networks:
       - web
     labels:

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"embed"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/yuin/goldmark"
@@ -81,35 +82,67 @@ type Blog struct {
 	BlogPosts []BlogPost `json:"blogPosts"`
 }
 
-func formatDate(date string) string {
-	dateHumanReadable, _ := time.Parse("2006-01-02T15:04:05-07:00", date)
-
-	return dateHumanReadable.Format("02 January 2006")
-}
-
-func urlPath(urlString string) string {
-	netUrl, _ := url.Parse(urlString)
-
-	return netUrl.Path
-}
+//go:embed static/* templates/*
+var f embed.FS
 
 func main() {
 	router := gin.Default()
 
-	router.SetFuncMap(template.FuncMap{
+	router.StaticFS("/public", http.FS(f))
+	htmlTemplate := template.Must(template.New("").Funcs(template.FuncMap{
 		"formatDate": formatDate,
 		"urlPath":    urlPath,
-	})
+	}).ParseFS(f, "templates/*/*"))
 
-	router.StaticFile("/favicon.ico", "./static/favicon.ico")
-	router.StaticFile("/favicon.png", "./static/favicon.png")
-	router.StaticFile("/favicon.svg", "./static/favicon.svg")
-	router.StaticFile("/humans.txt", "./static/humans.txt")
-	router.StaticFile("/robots.txt", "./static/robots.txt")
-	router.LoadHTMLGlob("./templates/*/*")
+	router.SetHTMLTemplate(htmlTemplate)
 
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{})
+	})
+
+	router.GET("favicon.ico", func(c *gin.Context) {
+		file, _ := f.ReadFile("static/favicon.ico")
+		c.Data(
+			http.StatusOK,
+			"image/x-icon",
+			file,
+		)
+	})
+
+	router.GET("favicon.png", func(c *gin.Context) {
+		file, _ := f.ReadFile("static/favicon.png")
+		c.Data(
+			http.StatusOK,
+			"image/png",
+			file,
+		)
+	})
+
+	router.GET("humans.txt", func(c *gin.Context) {
+		file, _ := f.ReadFile("static/humans.txt")
+		c.Data(
+			http.StatusOK,
+			"text/plain",
+			file,
+		)
+	})
+
+	router.GET("robots.txt", func(c *gin.Context) {
+		file, _ := f.ReadFile("static/robots.txt")
+		c.Data(
+			http.StatusOK,
+			"text/plain",
+			file,
+		)
+	})
+
+	router.GET("favicon.svg", func(c *gin.Context) {
+		file, _ := f.ReadFile("static/favicon.svg")
+		c.Data(
+			http.StatusOK,
+			"image/svg+xml",
+			file,
+		)
 	})
 
 	router.GET("/posts", func(c *gin.Context) {
@@ -159,6 +192,18 @@ func main() {
 	if err != nil {
 		return
 	}
+}
+
+func formatDate(date string) string {
+	dateHumanReadable, _ := time.Parse("2006-01-02T15:04:05-07:00", date)
+
+	return dateHumanReadable.Format("02 January 2006")
+}
+
+func urlPath(urlString string) string {
+	netUrl, _ := url.Parse(urlString)
+
+	return netUrl.Path
 }
 
 func getResponse(url string) []byte {
