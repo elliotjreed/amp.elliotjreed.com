@@ -101,7 +101,11 @@ func main() {
 		"urlPath":    urlPath,
 	})
 
-	router.Static("/", "./static")
+	router.StaticFile("/favicon.ico", "./static/favicon.ico")
+	router.StaticFile("/favicon.png", "./static/favicon.png")
+	router.StaticFile("/favicon.svg", "./static/favicon.svg")
+	router.StaticFile("/humans.txt", "./static/humans.txt")
+	router.StaticFile("/robots.txt", "./static/robots.txt")
 	router.LoadHTMLGlob("./templates/*/*")
 
 	router.GET("/", func(c *gin.Context) {
@@ -151,7 +155,10 @@ func main() {
 		})
 	})
 
-	router.Run("0.0.0.0:98") //nolint:errcheck
+	err := router.Run("0.0.0.0:98")
+	if err != nil {
+		return
+	}
 }
 
 func getResponse(url string) []byte {
