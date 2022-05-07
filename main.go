@@ -101,6 +101,7 @@ func main() {
 		"urlPath":    urlPath,
 	})
 
+	router.Static("/", "./static")
 	router.LoadHTMLGlob("./templates/*/*")
 
 	router.GET("/", func(c *gin.Context) {
